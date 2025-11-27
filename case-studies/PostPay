@@ -1,81 +1,265 @@
 # PostPay Automation (Case Study)
 **Repo:** https://githubgithub.com/jburleigh92/PostPay/tree/main/PostPay
+ 
+**Role:** Systems Integration Lead / Automation Engineer  
+**Tech Stack:** Python, Gmail API (OAuth2), macOS iMessage SQLite DB, Flask, Slack API, Regex, SQLite, Cron/Heroku Runtime, Webhooks
 
 ---
 
-## Summary
-PostPay is an automated payment-verification and dispatch workflow system built to support Baked Budz, a cannabis delivery business processing 70–100+ orders per day.  
-It replaces manual payment checking across Zelle, Venmo, Cash App, Apple Pay, and text confirmations with a real-time, error-free, fully automated pipeline.
+## Overview
+
+PostPay was a fully automated payment verification engine designed to eliminate the operational delays caused by manual confirmation of incoming customer payments across Zelle, Cash App, Venmo, and Apple Pay. The system replaced a slow, error-prone human workflow with an integrated Python service that extracted payment signals from multiple sources, validated them, stored them, and delivered real-time confirmation to dispatch and drivers.
+
+Before PostPay, payment verification regularly caused 10–15 minute delays, driver idle time at the customer’s door, and pipeline bottlenecks during peak hours. After deployment, verification became instant, eliminated dispatcher workload, and materially improved order throughput.
 
 ---
 
-## The Problem
-Before PostPay, the dispatch workflow was slow, inconsistent, and vulnerable to human error:
+# 1. Problem Definition
 
-- Payments had to be checked manually across multiple apps  
-- Drivers were sometimes sent out before payment confirmation  
-- No single-source audit trail existed  
-- Mistakes happened frequently during peak rush times  
-- Dispatcher workload was overwhelming  
-- Scaling up order volume was nearly impossible  
+### Manual Pre-Automation Workflow
+1. Customer sends payment via Zelle / Cash App / Venmo / Apple Pay.  
+2. Dispatcher waits for an SMS or email notification.  
+3. Dispatcher manually confirms the amount matches the order total.  
+4. Dispatcher messages the driver in Slack to proceed.  
+5. Driver completes delivery only after receiving confirmation.
 
-These issues reduced efficiency, increased labor needs, and introduced financial risk.
+### Operational Failures Identified
+- Drivers often waited 10–15 minutes at the customer’s door.  
+- Dispatchers were overloaded during peak hours (5–9 PM).  
+- Multiple simultaneous orders caused verification backlogs.  
+- Zelle email notifications frequently delayed after-hours.  
+- Human error caused mismatches, missed payments, and routing issues.  
 
----
-
-## The Solution
-PostPay automates the entire payment verification and dispatching process:
-
-- Normalizes transactions from Zelle, Venmo, Cash App, Apple Pay, and “Other” payment types  
-- Detects duplicates and ensures only valid new payments move forward  
-- Maintains an SQLite-backed audit log for full traceability  
-- Sends real-time Slack alerts with driver routing instructions  
-- Implements a sleep-window (12 AM – 9 AM) to prevent after-hours dispatching  
-- Logs errors, warnings, and events for operational visibility  
-- Runs on a scheduled interval with automated decision-making  
-
-PostPay transformed a manual multi-step workflow into a fast, scalable, automated system.
+The objective was clear: **eliminate manual verification entirely.**
 
 ---
 
-## Impact (Real-World Results)
-- Reduced verification time from **30–45 minutes → under 10 seconds**  
-- Eliminated all “payment mismatch” dispatching errors  
-- Enabled operational growth from ~30 → **70–100+ orders per day** without extra staff  
-- Reduced dispatcher workload by **over 80%**  
-- Increased delivery speed and customer satisfaction  
-- Created a permanent audit log supporting refunds, disputes, and QA  
+# 2. System Requirements
+
+### Functional Requirements
+- Parse payment notifications from **both email and SMS**.  
+- Extract sender, amount, timestamp, and memo/order reference.  
+- Validate against the active order queue.  
+- Store payment events with deduplication logic.  
+- Notify the correct driver instantly in Slack.  
+
+### Non-Functional Requirements
+- Near real-time (sub-second) processing.  
+- Resistant to duplicates and stale data.  
+- Continuous runtime with automatic restart on failure.  
+- Zero dispatcher involvement.
 
 ---
 
-## High-Level Architecture
-> *(Diagram should live in `/architecture/postpay-flow.png` or `/architecture/system-architecture.png`)*
+# 3. Architecture Overview
 
-**System Flow:**
-
-1. Payment apps → export/notification  
-2. Parser layer normalizes each payment type  
-3. Duplicate detection + DB validation  
-4. Slack bot sends real-time dispatch message  
-5. Scheduler runs the automation throughout the day  
-6. Logger captures events for debugging and audit  
-
-This modular architecture allows PostPay to scale and support new payment methods easily.
+```
+Customer → Payment App (Zelle / Cash App / Venmo / Apple Pay)
+          ↓
+Notification Channels
+  • Gmail API (Email)
+  • macOS iMessage DB (SMS)
+          ↓
+Extraction Layer (Python)
+  • Regex normalization
+  • Timestamp filtering
+  • Multi-source parsing
+          ↓
+SQLite Payment Database
+  • Unique constraints
+  • Cross-day filtering
+  • Order matching logic
+          ↓
+Slack API Notifications
+  • Driver channel(s)
+  • Dispatch alerts
+  • Delivery confirmation flow
+```
 
 ---
-Key Learnings
 
-Designed a modular parser system resilient to inconsistent real-world payment data
+# 4. Technical Breakdown
 
-Built a production-grade automation loop with scheduling and downtime logic
+## A. Email Extraction via Gmail API (OAuth2)
+Payment providers often sent structured notifications via email.
 
-Improved business throughput using software instead of labor
+Key responsibilities:
+- Registered an app in Google Cloud Console  
+- Configured OAuth2 credentials and token refresh  
+- Connected via Gmail API to scan unread emails  
+- Implemented precise pattern matching for:
+  - sender name  
+  - amount  
+  - payment method  
+  - timestamps  
+  - memo/order references  
 
-Enhanced operational visibility with logging, auditing, and tracing tools
+Handled edge cases:
+- duplicate notifications  
+- overnight rollovers  
+- stale emails from prior days  
+- inconsistent email templates between banks  
 
-Delivered a system that directly supports real, daily business operations
+---
 
-Repository
+## B. SMS Extraction via macOS iMessage SQLite Database
+
+When Zelle emails were delayed after business hours, SMS messages became the reliable source of truth.  
+macOS stores Messages.app data in:
+
+`/Users/<user>/Library/Messages/chat.db`
+
+Most engineers avoid this because it is undocumented and fragile.
+
+What was done:
+- reverse-engineered Apple’s internal schema  
+- identified message tables and join relationships  
+- extracted raw message data  
+- filtered messages based on patterns:
+  - "sent you"
+  - "payment pending"
+  - "received"
+- used timestamp logic to ensure same-day data  
+- prevented stale messages from being reprocessed  
+
+This solved the Zelle-after-6pm delay problem.
+
+---
+
+## C. Parsing & Normalization Engine
+
+A unified parsing module handled:
+- regex-based amount extraction  
+- unicode normalization  
+- mapping senders to customer profiles  
+- matching payment amounts to order totals  
+- confidence scoring logic for ambiguous messages  
+
+Additional logic included:
+- rounding tolerance  
+- multi-match detection  
+- false positive prevention  
+
+---
+
+## D. SQLite Local Database
+
+A lightweight SQLite DB was used to ensure:
+- deduplication of payments  
+- cross-channel correlation  
+- durable event tracking  
+- stable order matching  
+
+Schema included:
+- payment_id (unique hash)
+- timestamp
+- amount
+- sender
+- payment_method
+- raw_message
+- source_channel (SMS/email)
+- order_id (nullable until matched)
+
+---
+
+## E. Slack Notification Engine
+
+Once a payment was verified:
+- A formatted message was pushed to Slack  
+- Included customer name, payment method, order total, and timestamp  
+- Directed to the correct driver channel  
+- Dispatcher no longer had to do anything  
+
+Example notification:
+
+**Payment Verified**  
+Order #4821 — $75.00 received  
+Method: Cash App  
+Driver notified automatically
+
+---
+
+## F. Runtime Environment
+
+Two execution models:
+
+### Email + Data Layer  
+Deployed on a continuous runtime (locally + Heroku for testing).
+
+### SMS Extraction  
+Ran directly on the dispatch iMac (because the iMessage DB is local only).
+
+Combined, they formed a hybrid architecture that processed all payment types.
+
+---
+
+# 5. Results & Impact
+
+### Key Outcomes
+- Verification time reduced from **10–15 minutes → instant**  
+- Removed **10–15 hours/week** of dispatcher workload  
+- Resolved driver bottlenecks at the door  
+- Reduced order cancellations tied to payment delays  
+- Improved customer experience with faster delivery confirmation  
+- Ensured operational accuracy across 50+ orders/day during peak  
+
+### Why This Project Is SE-Level
+This project demonstrates skills typically associated with mid-level Solutions Engineers:
+
+- reverse engineering undocumented internal systems  
+- designing multi-source ingestion pipelines  
+- handling real-time operational constraints  
+- working with OAuth2, APIs, local DBs, Slack integrations  
+- building resilient, production-safe automations  
+
+PostPay was not a toy automation — it was a **core production system** used daily.
+
+---
+
+# 6. What This Case Study Demonstrates
+
+**Systems Thinking**  
+End-to-end ownership from ingestion → parsing → validation → notification.
+
+**API & Integration Literacy**  
+OAuth, SQLite, Slack API, cross-system mapping.
+
+**Operational Awareness**  
+Designing around workflow bottlenecks, human limitations, and real-world constraints.
+
+**Reverse Engineering**  
+Extracting data from undocumented systems like iMessage DB.
+
+**Automation Architecture**  
+Building stable continuous-running services with failover logic.
+
+**Cross-Functional Leadership**  
+Replacing a critical manual workflow with a fully automated, verifiable system.
+
+---
+
+# 7. Source Code Snapshot
+
+Full source refactor will be placed under:
+
+`automations/postpay/`
+
+Including:
+- `postpay.py`
+- `email_extractor.py`
+- `sms_parser.py`
+- `normalize.py`
+- `db.py`
+- `slack_notify.py`
+- sample JSON payloads
+- schema.sql
+
+---
+
+# 8. Summary
+
+PostPay automated one of the most operationally sensitive workflows in the organization, eliminating human bottlenecks, improving throughput, and providing a repeatable, scalable verification system. This project captures core Solutions Engineering capabilities: integration work, automation design, debugging messy data, and owning a critical technical workflow from design to deployment.
+
 
 Full source code and developer documentation:
 https://githubgithub.com/jburleigh92/PostPay/tree/main/PostPay
