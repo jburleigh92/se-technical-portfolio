@@ -1,0 +1,63 @@
+# AutoEnrollEngine – System Architecture Diagram
+
+                        ┌────────────────────────────┐
+                        │         Tookan App          │
+                        │  (Driver Verification Event)│
+                        └───────────────┬─────────────┘
+                                        │
+                                        │  Webhook POST
+                                        ▼
+                        ┌────────────────────────────────┐
+                        │          WhListen API           │
+                        │      (Flask Webhook Layer)      │
+                        └───────────────┬────────────────┘
+                                        │
+                               Parses Tookan payload:
+                               • customer phone
+                               • order ID
+                               • driver event type
+                               • tracking link
+                                        │
+                                        │
+                                        ▼
+                        ┌────────────────────────────────┐
+                        │     Selenium ETA Extractor     │
+                        │ (Scrapes dynamic tracking page)│
+                        └───────────────┬────────────────┘
+                                        │
+                             Extracted ETA returned
+                                        │
+                                        ▼
+                        ┌────────────────────────────────┐
+                        │     AutoEnrollEngine Core       │
+                        └───────────────┬────────────────┘
+                                        │
+                     ┌──────────────────┼──────────────────┐
+                     │                  │                  │
+                     ▼                  ▼                  ▼
+     ┌────────────────────────┐   ┌────────────────┐   ┌────────────────────────┐
+     │ Alpine IQ: Profile     │   │ Alpine IQ: SMS │   │ Alpine IQ: Loyalty     │
+     │ Lookup / Creation      │   │ Opt-In Sync    │   │ Points Assignment      │
+     │ • GET /profiles        │   │ • PUT /optin   │   │ • POST /points         │
+     │ • POST /profiles       │   │   /text/{#}/true│  │                        │
+     └───────────┬────────────┘   └────────┬───────┘   └──────────────┬────────┘
+                 │                         │                          │
+                 └───────────────┬─────────┴──────────────┬───────────┘
+                                 │                        │
+                                 ▼                        │
+                       ┌──────────────────┐               │
+                       │ Message Builder  │               │
+                       │ (ETA-aware SMS)  │               │
+                       └────────┬─────────┘               │
+                                │                         │
+                                ▼                         ▼
+                       ┌────────────────────────────────────────┐
+                       │          Alpine IQ SMS Sender          │
+                       │           POST /api/v2/sms             │
+                       └───────────────────┬────────────────────┘
+                                           │
+                                           ▼
+                           ┌────────────────────────────────┐
+                           │       CUSTOMER SMS DELIVERY     │
+                           │  “Your driver is X minutes away”│
+                           └────────────────────────────────┘
