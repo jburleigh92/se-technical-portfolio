@@ -1,98 +1,193 @@
-# Technical Portfolio — Jason Burleigh
-Solutions Engineer | Systems Integration Lead | Technical Operations
+# SE Technical Portfolio  
+**Author:** Jason Burleigh  
+**Role:** Solutions Engineer • Automation Engineer • Systems Architect  
+**Focus Areas:** API integrations, automation, workflow design, multi-system orchestration, POS/eCommerce/dispatch integrations  
 
-This portfolio documents my end-to-end systems engineering work: API integrations, workflow automation, multi-platform architecture design, and data-driven operational tooling. All projects in this repository were designed, implemented, and deployed into real production environments with live customers, real transactions, and operational dependencies.
-
-I specialize in building reliable automation layers across fragmented platforms, transforming manual workflows into scalable systems, and translating operational constraints into technical architecture. My background spans POS systems, logistics routing platforms, loyalty systems, eCommerce, webhook orchestration, and custom Python microservices.
-
----
-
-## Core Strengths
-
-**Systems Architecture**
-- Designing multi-system workflows connecting POS, dispatch, eCommerce, CRM, loyalty, and internal tooling  
-- Mapping data flows, defining integration logic, and building resilience around third-party API limitations  
-
-**API Integrations & Automation**
-- REST APIs, webhooks, OAuth2 authentication  
-- Building Python microservices and webhook listeners (Flask)  
-- Automated data extraction from structured and unstructured sources  
-- Real-time notification and event-driven processing  
-
-**Data Normalization & Catalog Management**
-- Standardizing inconsistent vendor data across 50+ sources  
-- Designing naming conventions, taxonomy rules, and catalog mapping logic  
-- Implementing automated cleaning, extraction, and classification workflows  
-
-**Technical Operations & Reliability**
-- Troubleshooting POS, eCommerce, logistics, and CRM system failures  
-- Creating SOPs, operational diagnostics, and cross-team communication frameworks  
-- Rapid debugging and issue triage in production environments  
+![GitHub followers](https://img.shields.io/github/followers/jburleigh92?style=social)
+![GitHub stars](https://img.shields.io/github/stars/jburleigh92?style=social)
+![Last Commit](https://img.shields.io/github/last-commit/jburleigh92/se-technical-portfolio)
+![Top Language](https://img.shields.io/github/languages/top/jburleigh92/se-technical-portfolio)
 
 ---
 
-## Highlighted Projects in This Portfolio
-
-### Payment Verification Engine (PostPay)
-A unified Python-based automation system that eliminated manual payment verification delays.  
-Key components include:
-- Gmail API extraction (OAuth2) for real-time payment notifications  
-- MacOS iMessage database parsing for Zelle/SMS verification  
-- SQLite storage with deduplication and timestamp filtering  
-- Slack API notifications for dispatch and driver workflows  
-- End-to-end logic that reduced verification delays from 10–15 minutes to near-instant  
-
-### Webhook Listener & ETA Extraction Service (WhListen)
-A Flask-based microservice that:
-- Listens to Tookan dispatch webhooks  
-- Extracts ETAs, verification events, and status updates  
-- Uses Selenium to pull additional dynamic data when needed  
-- Triggers customer messages and downstream workflow actions  
-- Supports real-time delivery visibility and automated routing logic  
-
-### Loyalty Auto-Enrollment System
-Designed to remove the need for manual onboarding by:
-- Intercepting dispatch verification events  
-- Creating or updating profiles via Alpine IQ API  
-- Applying points, opt-ins, and SMS notifications programmatically  
-- Replacing manual UI flows with a fully automated pipeline  
-
-### Multi-Platform eCommerce Architecture
-Co-architected front- and back-end integrations connecting:
-- Blaze POS  
-- Tookan (dispatch)  
-- Alpine IQ (CRM/loyalty)  
-- WooCommerce (storefront)  
-- Slack API (operational observability)  
-- Custom Python services for data flow and automation  
-
-This work included API mapping, catalog synchronization, error handling logic, webhook workflow definition, and supporting two iterations of a production storefront.
+# Table of Contents
+1. [Overview](#overview)
+2. [Highlighted Projects](#highlighted-projects)
+3. [Project Case Studies](#project-case-studies)
+   - [AutoEnrollEngine](#autoenrollengine)
+   - [PostPay Automation](#postpay-automation)
+   - [BakedBudz Store v1 → v2](#bakedbudz-store-v1--v2)
+4. [Skill Summary](#skill-summary)
+5. [Technical Strengths](#technical-strengths)
+6. [How to Navigate This Portfolio](#how-to-navigate-this-portfolio)
+7. [Contact](#contact)
 
 ---
 
-## Technical Domains Represented
+# Overview
+This repository is the central hub for my technical portfolio. I design and build end-to-end systems involving API integrations, workflow automation, dispatch platforms, eCommerce logic, POS systems, loyalty engines, and real-time event pipelines.
 
-- Python automation  
-- REST API design and integration  
-- Webhook orchestration  
-- Data parsing and normalization  
-- SQLite and lightweight data persistence  
-- Selenium for dynamic data extraction  
-- Slack API messaging workflows  
-- POS, logistics, and loyalty integrations  
-- eCommerce and catalog systems  
-- Operational reliability engineering  
+My work spans:
+- event-driven architecture  
+- multi-system automations  
+- POS → eCommerce → dispatch integrations  
+- webhook engineering  
+- reverse engineering undocumented APIs  
+- building high-impact operational tooling  
+
+Every project in this portfolio is based on real production work I designed or built to support high-volume cannabis delivery and eCommerce operations.
 
 ---
 
-## Purpose of This Portfolio
+# Highlighted Projects
 
-This repository serves as a technical demonstration of my ability to:
-- Architect complex, multi-platform integrations  
-- Build automation systems that directly improve operational performance  
-- Reverse engineer undocumented or partially documented workflows  
-- Debug and stabilize production environments with real users and real systems  
-- Translate operational constraints into scalable technical solutions  
+### **1. AutoEnrollEngine**
+Real-time customer verification, profile creation, opt-in sync, and SMS notifications triggered by Tookan driver “Verified Customer” events.  
+**Tech:** Python, Flask, Selenium, Alpine IQ API, Tookan Webhooks  
+📌 *Full case study below*
 
-All code samples, diagrams, and documentation reflect real projects used in production environments supporting daily operations, live orders, payments, and integrations.
+---
 
+### **2. PostPay Automation**
+A fully automated payment-ingestion + Slack notification engine parsing emails from Zelle, Venmo, Cash App, and Apple Pay to verify payments instantly.  
+**Tech:** Python, SQLite, IMAP/Gmail API, Slack API  
+📌 *Includes modular codebase + legacy versions folder*
+
+---
+
+### **3. BakedBudz Store v1 → v2**
+Architected both the Blaze-powered store (v1) and the full WooCommerce rebuild (v2), solving major API and plugin limitations through custom middleware and system design.  
+**Tech:** Blaze POS API, WooCommerce, WordPress, PHP, Webhooks, ID verification systems  
+📌 *Complete architectural narrative included*
+
+---
+
+# Project Case Studies
+
+## AutoEnrollEngine  
+A multi-system automation stack that used Tookan “Verified Customer” events to trigger a fully automated workflow:
+
+- Selenium-based ETA extraction  
+- automatic customer creation  
+- SMS opt-in override  
+- loyalty point assignment  
+- transactional outbound SMS via Alpine IQ  
+
+This replaced Alpine’s manual UI-driven workflow and required zero dispatcher involvement.
+
+**Repo:** https://github.com/jburleigh92/AutoEnrollEngine  
+**Architecture:** `architecture/autoenrollengine-architecture.md`
+
+---
+
+## PostPay Automation  
+A real-time payment-parsing and Slack-alerting engine used to validate 70–100+ orders/day with near-zero human involvement.
+
+Core capabilities:
+- Gmail ingestion  
+- multi-parser architecture  
+- duplicate-detection and audit logging  
+- SQLite event log  
+- Slack delivery notifications  
+- automated sleep window logic  
+
+Includes all production code + 3 generations of legacy versions.
+
+**Repo Folder:** `./PostPay/`  
+**Codebase:** Python, SQLite, Slack API, IMAP  
+
+---
+
+## BakedBudz Store v1 → v2  
+A complete end-to-end rebuild of a cannabis eCommerce & delivery stack.
+
+**v1:** Blaze plugin with major limitations  
+**v2:** Fully independent WooCommerce architecture with flexible API middleware, dispatch integration, catalog mapping tables, loyalty logic, and built-in tracking UI.
+
+My responsibilities included:
+- architecture design  
+- API testing and validation  
+- data mapping  
+- developer guidance  
+- webhook debugging  
+- reverse engineering Blaze’s undocumented behaviors  
+
+**Architecture:** `architecture/bakedbudz-v1-v2.md`
+
+---
+
+# Skill Summary
+
+### **Languages & Frameworks**
+- Python (primary)
+- Flask, FastAPI  
+- JavaScript / Node  
+- PHP (WordPress plugin debugging)  
+- SQL / SQLite  
+
+### **APIs & Integrations**
+- Blaze POS API  
+- Alpine IQ API  
+- Tookan Webhooks  
+- Onfleet API  
+- WooCommerce REST API  
+- Gmail API / IMAP  
+- Slack API  
+- ID Verification providers  
+- Payment providers (Venmo, Cash App, Zelle, etc.)
+
+### **Areas of Expertise**
+- multi-system workflow automation  
+- event-driven architecture  
+- webhook ingestion and transformation  
+- data normalization  
+- dispatch/route logistics  
+- catalog and inventory sync  
+- ETL-style transformations  
+- reverse engineering undocumented behavior  
+
+---
+
+# Technical Strengths
+
+### **Integration Design**
+I excel at connecting multiple platforms together and designing the data flow between them—identifying edge cases, failure modes, and fallback logic.
+
+### **Reverse Engineering**
+Many of these systems required diagnosing undocumented APIs, third-party plugin limitations, or inconsistent webhook payloads.
+
+### **Operational Awareness**
+I design systems around real-world constraints: delivery radius, dispatch timing, verification steps, ID compliance, inventory states, and peak-volume workflows.
+
+### **Automation & Tooling**
+Several of my tools directly replaced manual dispatcher workflows, reducing operational load by 70–90%+.
+
+---
+
+# How to Navigate This Portfolio
+The repository contains:
+- `architecture/` → system diagrams and flow documents  
+- `AutoEnrollEngine/` → full Python automation project  
+- `PostPay/` → full modular codebase + legacy versions  
+- `projects/` → case studies in markdown format  
+- `samples/` → code snippets and demonstrations  
+
+Each major project contains:
+- README or case study  
+- architecture diagrams  
+- example payloads  
+- end-to-end workflow documentation  
+
+---
+
+# Contact
+If you’d like to discuss my work or collaborate:
+
+**Email:** jburleigh1992@gmail.com  
+**GitHub:** https://github.com/jburleigh92  
+**LinkedIn:** [(optional — https://www.linkedin.com/in/jason-burleigh-962903396
+
+---
+
+**Thank you for reviewing my portfolio.**
+This repo represents real systems I’ve built, deployed, and operated end-to-end in production environments.
