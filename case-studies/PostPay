@@ -1,0 +1,81 @@
+# PostPay Automation (Case Study)
+**Repo:** https://githubgithub.com/jburleigh92/PostPay/tree/main/PostPay
+
+---
+
+## Summary
+PostPay is an automated payment-verification and dispatch workflow system built to support Baked Budz, a cannabis delivery business processing 70–100+ orders per day.  
+It replaces manual payment checking across Zelle, Venmo, Cash App, Apple Pay, and text confirmations with a real-time, error-free, fully automated pipeline.
+
+---
+
+## The Problem
+Before PostPay, the dispatch workflow was slow, inconsistent, and vulnerable to human error:
+
+- Payments had to be checked manually across multiple apps  
+- Drivers were sometimes sent out before payment confirmation  
+- No single-source audit trail existed  
+- Mistakes happened frequently during peak rush times  
+- Dispatcher workload was overwhelming  
+- Scaling up order volume was nearly impossible  
+
+These issues reduced efficiency, increased labor needs, and introduced financial risk.
+
+---
+
+## The Solution
+PostPay automates the entire payment verification and dispatching process:
+
+- Normalizes transactions from Zelle, Venmo, Cash App, Apple Pay, and “Other” payment types  
+- Detects duplicates and ensures only valid new payments move forward  
+- Maintains an SQLite-backed audit log for full traceability  
+- Sends real-time Slack alerts with driver routing instructions  
+- Implements a sleep-window (12 AM – 9 AM) to prevent after-hours dispatching  
+- Logs errors, warnings, and events for operational visibility  
+- Runs on a scheduled interval with automated decision-making  
+
+PostPay transformed a manual multi-step workflow into a fast, scalable, automated system.
+
+---
+
+## Impact (Real-World Results)
+- Reduced verification time from **30–45 minutes → under 10 seconds**  
+- Eliminated all “payment mismatch” dispatching errors  
+- Enabled operational growth from ~30 → **70–100+ orders per day** without extra staff  
+- Reduced dispatcher workload by **over 80%**  
+- Increased delivery speed and customer satisfaction  
+- Created a permanent audit log supporting refunds, disputes, and QA  
+
+---
+
+## High-Level Architecture
+> *(Diagram should live in `/architecture/postpay-flow.png` or `/architecture/system-architecture.png`)*
+
+**System Flow:**
+
+1. Payment apps → export/notification  
+2. Parser layer normalizes each payment type  
+3. Duplicate detection + DB validation  
+4. Slack bot sends real-time dispatch message  
+5. Scheduler runs the automation throughout the day  
+6. Logger captures events for debugging and audit  
+
+This modular architecture allows PostPay to scale and support new payment methods easily.
+
+---
+Key Learnings
+
+Designed a modular parser system resilient to inconsistent real-world payment data
+
+Built a production-grade automation loop with scheduling and downtime logic
+
+Improved business throughput using software instead of labor
+
+Enhanced operational visibility with logging, auditing, and tracing tools
+
+Delivered a system that directly supports real, daily business operations
+
+Repository
+
+Full source code and developer documentation:
+https://githubgithub.com/jburleigh92/PostPay/tree/main/PostPay

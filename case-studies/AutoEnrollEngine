@@ -1,0 +1,90 @@
+# AutoEnrollEngine (Case Study)  
+**Repo:** https://github.com/jburleigh92/AutoEnrollEngine
+
+---
+
+## Summary  
+AutoEnrollEngine is an automated tracking-analysis and ETA-normalization engine designed to convert real-time delivery tracking pages into actionable, structured data.  
+It provides a webhook interface that receives tracking URLs, performs dynamic webpage scraping using Selenium and headless Chrome, extracts live ETA values, normalizes them into meaningful delivery windows, and returns machine-readable results for downstream automations.
+
+The system enables any logistics, delivery, or dispatching workflow to access reliable ETA data programmatically—without human checking or manual page monitoring.
+
+---
+
+## The Problem  
+Many delivery operations rely on third-party tracking portals that expose ETA values only through dynamic web interfaces.  
+This creates several challenges:
+
+- ETAs require **manual checking** by staff.  
+- Tracking pages often load content dynamically with JavaScript.  
+- No stable API exists for capturing real-time ETA values.  
+- Dispatch decisions are slowed when staff must repeatedly refresh tracking pages.  
+- Scaling becomes difficult when operators cannot track multiple orders efficiently.  
+
+These limitations introduce operational delays, prevent automation, and reduce the ability to handle higher delivery volumes.
+
+---
+
+## The Solution  
+AutoEnrollEngine creates a reliable, automated way to extract ETA information from dynamic tracking pages:
+
+- Accepts webhook requests containing a tracking URL  
+- Launches headless Chrome via Selenium to load the page  
+- Waits for the ETA UI element to fully render  
+- Extracts the live ETA value in minutes  
+- Normalizes ETA into consistent time windows (e.g., “25–35 mins”)  
+- Returns structured JSON suitable for dispatching, routing, or messaging workflows  
+
+By converting a webpage-only ETA into structured data, the system provides the foundation for fully automated delivery workflows.
+
+---
+
+## Impact  
+AutoEnrollEngine delivers operational improvements immediately:
+
+- Removes the need to manually check tracking pages  
+- Provides consistent and repeatable ETA extraction  
+- Integrates easily into dispatching or messaging services  
+- Enables automation of customer notifications, routing logic, and SLA tracking  
+- Reduces operator workload and speeds up decision-making  
+- Works with any tracking system that renders ETAs in the browser  
+
+The system is designed for production use and can be deployed in Docker for predictable, repeatable operation.
+
+---
+
+## High-Level Architecture  
+
+```
+Webhook → Payload Validation → Selenium Scraping → ETA Extraction → ETA Normalization → JSON Response
+```
+
+**Flow Description**
+
+1. External system sends a POST request containing a tracking URL.  
+2. Payload is validated to prevent malformed requests.  
+3. A headless Chrome session loads the tracking page.  
+4. The scraper waits for the ETA element to appear.  
+5. Raw ETA value (minutes) is parsed from the UI.  
+6. ETA is normalized into consistent time windows.  
+7. JSON response is returned to the requesting system.
+
+This modular structure isolates each responsibility, making the system easy to extend with additional scrapers, business rules, or integrations.
+
+---
+
+## Key Learnings  
+
+- Built a resilient scraping pipeline capable of handling dynamic, JavaScript-rendered content  
+- Developed a clean webhook processing stack with strict input validation  
+- Designed a modular Selenium architecture optimized for reuse and testing  
+- Introduced structured ETA normalization to improve consistency across multiple tracking systems  
+- Created a Docker-ready Python service suitable for production automation  
+- Demonstrated the ability to turn manual UI-based workflows into automated data pipelines  
+
+---
+
+## Repository  
+Full source code and developer documentation:  
+https://github.com/jburleigh92/AutoEnrollEngine
+
