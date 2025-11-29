@@ -46,7 +46,6 @@ Real-time customer verification, profile creation, opt-in sync, and SMS notifica
 
 **Tech:** Python, Flask, Selenium, Alpine IQ API, Tookan Webhooks  
 **Repository:** https://github.com/jburleigh92/AutoEnrollEngine
-
 **Architecture:** `architecture/AutoEnrollEngine_system_diagram`  
 **Case Study:** `case-studies/AutoEnrollEngine`
 
