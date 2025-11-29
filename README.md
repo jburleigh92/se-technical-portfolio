@@ -93,7 +93,7 @@ Core capabilities:
 
 Includes all production code + 3 generations of legacy versions.
 
-**Repo Folder:** `./PostPay/`  
+**Repo Folder:** https://github.com/jburleigh92/PostPay  
 **Codebase:** Python, SQLite, Slack API, IMAP  
 
 ---
@@ -185,7 +185,7 @@ If you’d like to discuss my work or collaborate:
 
 **Email:** jburleigh1992@gmail.com  
 **GitHub:** https://github.com/jburleigh92  
-**LinkedIn:** [(optional — https://www.linkedin.com/in/jason-burleigh-962903396
+**LinkedIn:** https://www.linkedin.com/in/jason-burleigh-962903396
 
 ---
 
