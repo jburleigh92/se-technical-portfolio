@@ -45,9 +45,9 @@ Every project in this portfolio is based on real production work I designed or b
 Real-time customer verification, profile creation, opt-in sync, and SMS notifications triggered by Tookan driver “Verified Customer” events.
 
 **Tech:** Python, Flask, Selenium, Alpine IQ API, Tookan Webhooks  
+**Repository:** https://github.com/jburleigh92/AutoEnrollEngine
 **Architecture:** `architecture/AutoEnrollEngine_system_diagram`  
 **Case Study:** `case-studies/AutoEnrollEngine`
-**Repo:** `https://github.com/jburleigh92/AutoEnrollEngine`
 
 ---
 
@@ -58,8 +58,6 @@ A fully automated payment-ingestion and Slack-notification engine processing Zel
 **Repository:** https://github.com/jburleigh92/PostPay  
 **Case Study:** `case-studies/PostPay`  
 **Architecture:** `architecture/PostPay_system_diagram`
-**Repo:** `https://github.com/jburleigh92/PostPay`
-
 
 ---
 
