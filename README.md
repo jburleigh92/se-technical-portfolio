@@ -56,8 +56,8 @@ A fully automated payment-ingestion and Slack-notification engine processing Zel
 
 **Tech:** Python, SQLite, Slack API, Gmail/IMAP  
 **Repository:** https://github.com/jburleigh92/PostPay  
+**Architecture:** `architecture/PostPay_system_diagram`   
 **Case Study:** `case-studies/PostPay`  
-**Architecture:** `architecture/PostPay_system_diagram`
 
 ---
 
