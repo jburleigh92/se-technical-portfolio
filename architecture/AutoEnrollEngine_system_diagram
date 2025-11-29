@@ -1,16 +1,16 @@
 # AutoEnrollEngine – System Architecture Diagram
 
-                        ┌────────────────────────────┐
+                        ┌────────────────────────-────┐
                         │         Tookan App          │
                         │  (Driver Verification Event)│
                         └───────────────┬─────────────┘
                                         │
                                         │  Webhook POST
                                         ▼
-                        ┌────────────────────────────────┐
-                        │          WhListen API           │
+                        ┌───────────────────────────-─────┐
+                        │      AutoEnrollEngine API       │
                         │      (Flask Webhook Layer)      │
-                        └───────────────┬────────────────┘
+                        └───────────────┬──────────────-──┘
                                         │
                                Parses Tookan payload:
                                • customer phone
@@ -29,7 +29,7 @@
                                         │
                                         ▼
                         ┌────────────────────────────────┐
-                        │     AutoEnrollEngine Core       │
+                        │     AutoEnrollEngine Core      │
                         └───────────────┬────────────────┘
                                         │
                      ┌──────────────────┼──────────────────┐
@@ -39,8 +39,8 @@
      │ Alpine IQ: Profile     │   │ Alpine IQ: SMS │   │ Alpine IQ: Loyalty     │
      │ Lookup / Creation      │   │ Opt-In Sync    │   │ Points Assignment      │
      │ • GET /profiles        │   │ • PUT /optin   │   │ • POST /points         │
-     │ • POST /profiles       │   │   /text/{#}/true│  │                        │
-     └───────────┬────────────┘   └────────┬───────┘   └──────────────┬────────┘
+     │ • POST /profiles       │   │  /text/{#}/true│   │                        │
+     └───────────┬────────────┘   └────────┬───────┘   └──────────────┬──────-──┘
                  │                         │                          │
                  └───────────────┬─────────┴──────────────┬───────────┘
                                  │                        │
@@ -57,7 +57,7 @@
                        └───────────────────┬────────────────────┘
                                            │
                                            ▼
-                           ┌────────────────────────────────┐
+                           ┌────────────────────────────-────┐
                            │       CUSTOMER SMS DELIVERY     │
-                           │  “Your driver is X minutes away”│
-                           └────────────────────────────────┘
+                           │ “Your driver is X minutes away” │
+                           └────────────────────────────-────┘
