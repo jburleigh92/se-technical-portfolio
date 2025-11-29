@@ -14,9 +14,6 @@
 1. [Overview](#overview)  
 2. [Highlighted Projects](#highlighted-projects)  
 3. [Project Case Studies](#project-case-studies)  
-   - [AutoEnrollEngine](#autoenrollengine)  
-   - [PostPay Automation](#postpay-automation)  
-   - [BakedBudz Store v1 → v2](#bakedbudz-store-v1--v2)  
 4. [Skill Summary](#skill-summary)  
 5. [Technical Strengths](#technical-strengths)  
 6. [How to Navigate This Portfolio](#how-to-navigate-this-portfolio)  
@@ -35,7 +32,7 @@ My work spans:
 - reverse engineering undocumented APIs  
 - building high-impact operational tooling  
 
-Every project in this portfolio is based on real production work I designed or built to support high-volume cannabis delivery and eCommerce operations.
+Every project here is based on **real production work** supporting high-volume cannabis delivery and eCommerce operations.
 
 ---
 
@@ -46,8 +43,16 @@ A fully automated payment-ingestion and Slack-notification engine processing Zel
 
 **Tech:** Python, SQLite, Slack API, Gmail/IMAP  
 **Repository:** https://github.com/jburleigh92/PostPay  
-**Architecture:** `architecture/PostPay_system_diagram`   
-**Case Study:** `case-studies/PostPay`  
+**Architecture:** `architecture/PostPay_system_diagram`  
+**Case Study:** `case-studies/PostPay`
+
+**Business Outcome**
+- Eliminated manual dispatcher verification for ~70–100 payments/day.  
+- Reduced order delays caused by “payment confirmation waiting.”  
+- Created an audit log reducing disputes and lost revenue.
+
+**Why This Matters for Solutions Engineering**
+Shows ability to design a multi-system pipeline, solve operational bottlenecks, and build reliable real-time automation.
 
 ---
 
@@ -55,20 +60,56 @@ A fully automated payment-ingestion and Slack-notification engine processing Zel
 Real-time customer verification, profile creation, opt-in sync, and SMS notifications triggered by Tookan driver “Verified Customer” events.
 
 **Tech:** Python, Flask, Selenium, Alpine IQ API, Tookan Webhooks  
-**Repository:** https://github.com/jburleigh92/AutoEnrollEngine     
+**Repository:** https://github.com/jburleigh92/AutoEnrollEngine  
 **Architecture:** `architecture/AutoEnrollEngine_system_diagram`  
 **Case Study:** `case-studies/AutoEnrollEngine`
+
+**Business Outcome**
+- Automatically converted “in-delivery verified customers” into full CRM profiles.  
+- Increased opt-ins, loyalty attachment, and SMS deliverability.  
+- Removed manual dispatcher tasks and human delays.
+
+**Why This Matters for Solutions Engineering**
+Demonstrates system orchestration, API chaining, event-triggered automation, and cross-platform workflow design.
 
 ---
 
 ## 3. BakedBudz Store v1 → v2
 A complete rebuild of the BakedBudz online store.
 
-**v1:** Blaze-powered store with major plugin limitations  
-**v2:** Fully custom WooCommerce rebuild with middleware, catalog mapping, loyalty features, and integrated dispatch UI.  
+**v1:** Blaze-powered store with significant plugin and API limitations  
+**v2:** Fully custom WooCommerce architecture with middleware, catalog mapping, loyalty support, and integrated dispatch UI.
 
 **Architecture:** `architecture/bakedbudz_system_diagram`  
-**Case Study:** `case-studies/bakedbudz.store`  
+**Case Study:** `case-studies/bakedbudz.store`
+
+**Business Outcome**
+- Improved conversion rates by removing Blaze plugin constraints.  
+- Enabled flexible promotions, tracking UI, and API-driven inventory logic.  
+- Reduced vendor dependency and enabled full ownership of the commerce stack.
+
+**Why This Matters for Solutions Engineering**
+Shows product thinking, migration design, API validation, and ability to diagnose/replace failing vendor systems.
+
+---
+
+# Project Case Studies
+Full project narratives (problems, architecture, outcomes) are included in:
+
+``
+case-studies/
+│
+├── AutoEnrollEngine
+├── PostPay
+└── bakedbudz.store
+``
+
+Each one includes:
+- before & after workflow  
+- business impact  
+- what was automated  
+- technical architecture  
+- what I specifically contributed  
 
 ---
 
@@ -104,16 +145,16 @@ A complete rebuild of the BakedBudz online store.
 # Technical Strengths
 
 ### Integration Design
-Designing the data flow between multiple platforms—mapping payloads, identifying failure modes, implementing fallback logic.
+Designing clean, predictable data flows between multiple platforms—mapping payloads, identifying failure modes, and creating fallback logic.
 
 ### Reverse Engineering
-Diagnosing undocumented APIs, plugin limitations, sandbox issues, and unexpected webhook payloads.
+Diagnosing undocumented APIs, plugin limitations, sandbox mismatch behavior, and inconsistent webhook payloads.
 
 ### Operational Awareness
-Systems designed around real-world constraints: delivery radius, ID verification, dispatch timing, compliance, and peak-volume conditions.
+Systems designed with real-world constraints: delivery radius, ID verification, compliance, dispatch timing, and peak-volume behavior.
 
 ### Automation & Tooling
-Many of these tools replaced manual dispatcher workflows, reducing operational load by 70–90%.
+Many of these tools replaced manual dispatcher workflows, reducing operational workload by **70–90%**.
 
 ---
 
@@ -125,23 +166,22 @@ This repository contains:
   System architecture diagrams for each major project.
 
 - **`case-studies/`**  
-  Narrative project breakdowns with business context, before/after workflows, and outcomes.
+  Narrative project breakdowns with before/after workflows, systems, and business outcomes.
 
 - **`AutoEnrollEngine/`**  
   Full production automation project.
 
 - **`PostPay/`**  
-  Modular payment-ingestion automation (repo linked externally) + supporting case study.
+  External repo containing the modular payment-ingestion engine.
 
 - **`bakedbudz.store/`**  
-  eCommerce architecture, migration logic, and solution design.
+  Solution design, architecture, and migration notes.
 
 Each project folder includes:
 - architecture diagram  
-- full code or pseudo-code  
-- workflows and payload examples  
-- business impact explanation  
-- system design reasoning  
+- workflows & technical reasoning  
+- business impact  
+- code or implementation details  
 
 ---
 
@@ -153,4 +193,4 @@ Each project folder includes:
 ---
 
 Thank you for reviewing my portfolio.  
-This repository represents real systems I have designed, built, deployed, and operated in production environments.
+This repository represents real systems I’ve designed, built, deployed, and operated in production environments.
